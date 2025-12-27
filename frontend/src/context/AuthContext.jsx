@@ -73,9 +73,20 @@
         };
 
         return (
-            <AuthContext.Provider value={{ user, token, loading, login, register, logout, isAuthenticated: !!token }}>
-                {!loading && children} {/* Render children only after auth state is loaded */}
-            </AuthContext.Provider>
+          <AuthContext.Provider
+            value={{
+              user,
+              setUser,
+              token,
+              loading,
+              login,
+              register,
+              logout,
+              isAuthenticated: !!token,
+            }}
+          >
+            {!loading && children}
+          </AuthContext.Provider>
         );
     };
 
