@@ -2,15 +2,19 @@
     import { useAuth } from '../context/AuthContext';
     import { Link } from 'react-router-dom';
     import Navbar from '../components/Navbar';
-    import TaskCard from '../components/TaskCard'; // Import TaskCard
-    import TaskForm from '../components/TaskForm'; // Import TaskForm
-    import api from '../api'; // Import api for fetching tasks
+    import TaskCard from '../components/TaskCard';
+    import TaskForm from '../components/TaskForm';
+    import TaskEditModal from '../components/TaskEditModal'; // Import TaskEditModal
+    import api from '../api';
 
     const DashboardPage = () => {
       const { user } = useAuth();
       const [tasks, setTasks] = useState([]);
       const [loadingTasks, setLoadingTasks] = useState(true);
       const [error, setError] = useState("");
+
+      const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+      const [taskToEdit, setTaskToEdit] = useState(null);
 
       const fetchTasks = async () => {
         if (!user?.organization) {
@@ -32,15 +36,44 @@
 
       useEffect(() => {
         fetchTasks();
-      }, [user?.organization]); // Refetch tasks when user's organization changes
+      }, [user?.organization]);
 
       const handleTaskCreated = (newTask) => {
-        setTasks((prevTasks) => [newTask, ...prevTasks]); // Add new task to the top
+        setTasks((prevTasks) => [newTask, ...prevTasks]);
+      };
+
+      const handleEditClick = (task) => {
+        setTaskToEdit(task);
+        setIsEditModalOpen(true);
+      };
+
+      const handleTaskUpdated = (updatedTask) => {
+        setTasks((prevTasks) =>
+          prevTasks.map((task) =>
+            task._id === updatedTask._id ? updatedTask : task
+          )
+        );
+        setIsEditModalOpen(false); // Close modal after update
+        setTaskToEdit(null); // Clear task to edit
+      };
+
+      const handleDeleteClick = async (taskId) => {
+        if (window.confirm("Are you sure you want to delete this task?")) {
+          try {
+            await api.delete(`/api/tasks/${taskId}`);
+            setTasks((prevTasks) =>
+              prevTasks.filter((task) => task._id !== taskId)
+            );
+          } catch (err) {
+            console.error("Error deleting task:", err);
+            setError("Failed to delete task. Please try again.");
+          }
+        }
       };
 
       return (
         <div className="min-h-screen bg-gray-100">
-          <Navbar />
+          {/* <Navbar /> */}
 
           <div className="container mx-auto p-6">
             <h2 className="text-3xl font-extrabold text-gray-900 mb-6">
@@ -59,13 +92,13 @@
                       {user.organization}
                     </span>
                   </p>
-                  {/* In the future, we'll display organization name here, if fetched */}
                   <p className="text-gray-600 mt-2">
                     Ready to manage your tasks!
                   </p>
                 </div>
-                <TaskForm onTaskCreated={handleTaskCreated} />{" "}
-                {/* Task creation form */}
+
+                <TaskForm onTaskCreated={handleTaskCreated} />
+
                 <div className="mt-8">
                   <h3 className="text-2xl font-semibold text-gray-800 mb-4">
                     Your Tasks
@@ -81,7 +114,12 @@
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {tasks.map((task) => (
-                        <TaskCard key={task._id} task={task} />
+                        <TaskCard
+                          key={task._id}
+                          task={task}
+                          onEdit={handleEditClick}
+                          onDelete={handleDeleteClick}
+                        />
                       ))}
                     </div>
                   )}
@@ -120,6 +158,15 @@
               </div>
             )}
           </div>
+
+          {taskToEdit && (
+            <TaskEditModal
+              isOpen={isEditModalOpen}
+              onClose={() => setIsEditModalOpen(false)}
+              task={taskToEdit}
+              onTaskUpdated={handleTaskUpdated}
+            />
+          )}
         </div>
       );
     };

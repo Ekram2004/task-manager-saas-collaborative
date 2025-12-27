@@ -1,8 +1,8 @@
 import React from "react";
 import { format } from "date-fns";
 
-const TaskCard = ({ task }) => {
-  // Tailwind classes for status badges
+const TaskCard = ({ task, onEdit, onDelete }) => {
+  // Added onEdit, onDelete props
   const statusColors = {
     "To Do": "bg-gray-200 text-gray-800",
     "In Progress": "bg-blue-200 text-blue-800",
@@ -66,7 +66,21 @@ const TaskCard = ({ task }) => {
           on {format(new Date(task.createdAt), "MMM d, yyyy")}
         </p>
       </div>
-      {/* Future: Edit/Delete buttons can go here */}
+
+      <div className="flex justify-end space-x-2 mt-4">
+        <button
+          onClick={() => onEdit(task)}
+          className="px-3 py-1 text-sm font-medium text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 rounded-md transition duration-150 ease-in-out"
+        >
+          Edit
+        </button>
+        <button
+          onClick={() => onDelete(task._id)}
+          className="px-3 py-1 text-sm font-medium text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 rounded-md transition duration-150 ease-in-out"
+        >
+          Delete
+        </button>
+      </div>
     </div>
   );
 };
