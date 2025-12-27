@@ -1,77 +1,93 @@
-import React, { useState } from "react";
-import { useAuth } from "../context/AuthContext";
-import { Link } from "react-router-dom";
+    import React, { useState } from 'react';
+    import { useAuth } from '../context/AuthContext';
+    import { Link } from 'react-router-dom';
 
-const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const { login } = useAuth();
+    const LoginPage = () => {
+      const [email, setEmail] = useState("");
+      const [password, setPassword] = useState("");
+      const [message, setMessage] = useState("");
+      const { login } = useAuth();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setMessage("");
-    const result = await login(email, password);
-    if (!result.success) {
-      setMessage(result.message || "Login failed.");
-    }
-  };
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        setMessage("");
+        const result = await login(email, password);
+        if (!result.success) {
+          setMessage(result.message || "Login failed.");
+        }
+      };
 
-  return (
-    <div
-      style={{
-        maxWidth: "400px",
-        margin: "50px auto",
-        padding: "20px",
-        border: "1px solid #ccc",
-        borderRadius: "8px",
-      }}
-    >
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: "15px" }}>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
-          />
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-md w-full space-y-8 p-10 bg-white shadow-xl rounded-lg">
+            <div>
+              <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                Sign in to your account
+              </h2>
+            </div>
+            <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+              <div className="rounded-md shadow-sm -space-y-px">
+                <div>
+                  <label htmlFor="email-address" className="sr-only">
+                    Email address
+                  </label>
+                  <input
+                    id="email-address"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    placeholder="Email address"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="password" className="sr-only">
+                    Password
+                  </label>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autoComplete="current-password"
+                    required
+                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              {message && (
+                <div className="text-red-600 text-sm text-center">
+                  {message}
+                </div>
+              )}
+
+              <div>
+                <button
+                  type="submit"
+                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  Sign in
+                </button>
+              </div>
+            </form>
+            <div className="text-sm text-center">
+              Don't have an account?{" "}
+              <Link
+                to="/register"
+                className="font-medium text-indigo-600 hover:text-indigo-500"
+              >
+                Register
+              </Link>
+            </div>
+          </div>
         </div>
-        <div style={{ marginBottom: "15px" }}>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
-          />
-        </div>
-        <button
-          type="submit"
-          style={{
-            width: "100%",
-            padding: "10px",
-            backgroundColor: "#007bff",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-          }}
-        >
-          Login
-        </button>
-        {message && (
-          <p style={{ color: "red", marginTop: "10px" }}>{message}</p>
-        )}
-      </form>
-      <p style={{ marginTop: "20px", textAlign: "center" }}>
-        Don't have an account? <Link to="/register">Register</Link>
-      </p>
-    </div>
-  );
-};
+      );
+    };
 
-export default LoginPage;
+    export default LoginPage;
