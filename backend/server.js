@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
+const organizationRoutes = require('./routes/organizationRoutes');
 
 const app = express();
 
@@ -10,6 +11,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/api/auth', authRoutes);
+app.use("/api/organizations", organizationRoutes);
 
 
 mongoose.connect(process.env.MONGO_URI)
@@ -18,10 +20,6 @@ mongoose.connect(process.env.MONGO_URI)
         console.error('MongoDB connection error:', err);
         process.exit(1);
     });
-
-app.get('/', (req, res) => {
-    res.send('Task Manager SaaS Backend API');
-});
 
 const PORT = process.env.PORT || 5000;
 
