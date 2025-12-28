@@ -8,6 +8,8 @@ const generateToken = (id, organizationId) => {
     }, process.env.JWT_SECRET, { expiresIn: '1h' });
 };
 
+exports.generateToken = generateToken;
+
 
 exports.register = async (req, res) => {
     const { name, email, password } = req.body;

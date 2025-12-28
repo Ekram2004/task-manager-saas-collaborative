@@ -1,20 +1,20 @@
 const express = require("express");
-    const {
-      getTasks,
-      getTask,
-      createTask,
-      updateTask,
-      deleteTask,
-    } = require("../controllers/taskController");
-    const { protect } = require("../middleware/authMiddleware"); // Import our auth middleware
+const {
+  getTasks,
+  getTask,
+  createTask,
+  updateTask,
+  deleteTask,
+} = require("../controllers/taskController");
+const { protect } = require("../middleware/authMiddleware"); // Import our auth middleware
 
-    const router = express.Router();
+const router = express.Router();
 
-    // All task routes require authentication
-    router.use(protect);
+// All task routes require authentication
+router.use(protect);
 
-    router.route("/").get(getTasks).post(createTask);
+router.route("/").get(getTasks).post(createTask);
 
-    router.route("/:id").get(getTask).put(updateTask).delete(deleteTask);
+router.route("/:id").get(getTask).put(updateTask).delete(deleteTask);
 
-    module.exports = router;
+module.exports = router;
