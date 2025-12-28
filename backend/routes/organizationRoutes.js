@@ -4,24 +4,23 @@ const {
   getMyOrganization,
   getOrganizations,
   getOrganizationById,
-  addOrganizationMember, // New
-  removeOrganizationMember, // New
+  addOrganizationMember,
+  removeOrganizationMember,
+  getOrganizationMembersList, // New import
 } = require("../controllers/organizationController");
 const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-router.use(protect); // All organization routes require authentication
+router.use(protect);
 
 router.post("/", createOrganization);
 router.get("/my", getMyOrganization);
+router.get("/my/members", getOrganizationMembersList); // NEW ROUTE
 
-// New routes for member management
-router.post("/:id/members", addOrganizationMember); // Add member by email to a specific organization
-router.delete("/:id/members/:memberId", removeOrganizationMember); // Remove member from a specific organization
+router.post("/:id/members", addOrganizationMember);
+router.delete("/:id/members/:memberId", removeOrganizationMember);
 
-// Future routes (might not be needed for MVP)
-router.get("/", getOrganizations);
-router.get("/:id", getOrganizationById);
+// ... (future/placeholder routes) ...
 
 module.exports = router;

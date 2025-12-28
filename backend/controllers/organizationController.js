@@ -1,5 +1,6 @@
 const Organization = require("../models/Organization");
 const User = require("../models/User");
+const { generateToken } = require("./authController");
 
 /**
  * @desc    Create a new organization
@@ -78,6 +79,45 @@ exports.getMyOrganization = async (req, res) => {
  * @route   POST /api/organizations/:id/members
  * @access  Private
  */
+
+exports.getOrganizationMembersList = async (req, res) => {
+  try {
+    const organizationId = req.organizationId; // From auth middleware
+
+    if (!organizationId) {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "User is not associated with an organization.",
+        });
+    }
+
+    const organization = await Organization.findById(organizationId).populate(
+      "members",
+      "name email"
+    );
+
+    if (!organization) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Organization not found." });
+    }
+
+    // Return a simplified list of members for dropdowns
+    const membersList = organization.members.map((member) => ({
+      _id: member._id,
+      name: member.name,
+      email: member.email,
+    }));
+
+    res.status(200).json({ success: true, data: membersList });
+  } catch (error) {
+    console.error("Error fetching organization members list:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
 exports.addOrganizationMember = async (req, res) => {
   const { email } = req.body;
   const orgId = req.params.id;
