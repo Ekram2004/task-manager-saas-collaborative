@@ -3,7 +3,8 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
-import OrganizationCreatePage from "./pages/OrganizationCreatePage"; // Import new page
+import OrganizationCreatePage from "./pages/OrganizationCreatePage";
+import OrganizationMembersPage from "./pages/OrganizationMembersPage"; // Import new page
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -19,11 +20,14 @@ function App() {
           <Route
             path="/organizations/create"
             element={<OrganizationCreatePage />}
+          />
+          <Route
+            path="/organizations/members"
+            element={<OrganizationMembersPage />}
           />{" "}
           {/* New protected route */}
           {/* Add more protected routes here as we build them */}
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />{" "}
-          {/* Redirect root to dashboard */}
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Route>
 
         {/* Catch-all for undefined routes - redirect to dashboard if authenticated, else to login */}

@@ -110,8 +110,7 @@
                                     <option>To Do</option>
                                     <option>In Progress</option>
                                     <option>Done</option>
-                                    <option>Archive
-                                        UnlimAI (GPT | Claude | MidJourney), [12/27/2025 5:41 AM]
+                                    <option>ArchiveUnlimAI (GPT | Claude | MidJourney), [12/27/2025 5:41 AM]
 d</option>
                                 </select>
                             </div>
@@ -176,7 +175,7 @@ d</option>
                                 type="submit"
                                 className=
 
- 
+
 "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
                                 disabled={loading}
                             >

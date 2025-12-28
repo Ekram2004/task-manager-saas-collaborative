@@ -11,8 +11,6 @@
       const navigate = useNavigate();
       const { user, setUser } = useAuth(); // We need setUser to update the context
 
-      
-
       // Redirect if user already has an organization
       if (user && user.organization) {
         navigate("/dashboard");
@@ -26,9 +24,7 @@
 
         try {
           const response = await api.post("/api/organizations", { name });
-          const { organization, user: updatedUser, token: newToken } = response.data;
-          
-          updateAuthTokens(newToken, updatedUser);
+          const { organization, user: updatedUser } = response.data;
 
           // Update AuthContext and local storage with the new user data (which includes organization ID)
           setUser(updatedUser);
@@ -51,7 +47,7 @@
 
       return (
         <div className="min-h-screen bg-gray-100">
-          {/* <Navbar /> */}
+          <Navbar />
           <div className="container mx-auto p-6">
             <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-xl mt-10">
               <h2 className="text-3xl font-extrabold text-gray-900 mb-6 text-center">
