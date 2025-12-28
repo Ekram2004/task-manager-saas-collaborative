@@ -73,7 +73,7 @@
 
       return (
         <div className="min-h-screen bg-gray-100">
-          {/* <Navbar /> */}
+          <Navbar />
 
           <div className="container mx-auto p-6">
             <h2 className="text-3xl font-extrabold text-gray-900 mb-6">

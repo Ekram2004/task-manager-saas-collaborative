@@ -11,6 +11,8 @@
       const navigate = useNavigate();
       const { user, setUser } = useAuth(); // We need setUser to update the context
 
+      
+
       // Redirect if user already has an organization
       if (user && user.organization) {
         navigate("/dashboard");
@@ -24,7 +26,9 @@
 
         try {
           const response = await api.post("/api/organizations", { name });
-          const { organization, user: updatedUser } = response.data;
+          const { organization, user: updatedUser, token: newToken } = response.data;
+          
+          updateAuthTokens(newToken, updatedUser);
 
           // Update AuthContext and local storage with the new user data (which includes organization ID)
           setUser(updatedUser);

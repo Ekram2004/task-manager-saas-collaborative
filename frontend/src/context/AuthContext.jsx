@@ -10,6 +10,15 @@
         const [loading, setLoading] = useState(true); // To indicate if auth state is still being loaded
         const navigate = useNavigate();
 
+        const updateAuthTokens = (newToken, updateUserData) => {
+            localStorage.setItem('token', newToken);
+            localStorage.setItem('user', JSON.stringify(updateUserData));
+
+            setToken(newToken);
+            setUser(updateUserData);
+            api.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+        };
+
         // Load user from local storage or validate token on initial load
         useEffect(() => {
             const storedToken = localStorage.getItem('token');
@@ -82,6 +91,7 @@
               login,
               register,
               logout,
+              updateAuthTokens,
               isAuthenticated: !!token,
             }}
           >
